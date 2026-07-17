@@ -37,7 +37,7 @@ export default function AdminPasswordModal({ isOpen, onClose, onSubmit }) {
             autoFocus
           />
           
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-gray-300 text-sm">{error}</p>}
           
           <div className="flex gap-3">
             <button
@@ -47,13 +47,13 @@ export default function AdminPasswordModal({ isOpen, onClose, onSubmit }) {
                 setError('');
                 onClose();
               }}
-              className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded font-medium transition text-sm"
+              className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded font-medium text-sm"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition text-sm"
+              className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded font-medium text-sm"
             >
               Entrar
             </button>

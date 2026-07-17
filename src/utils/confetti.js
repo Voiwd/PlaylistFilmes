@@ -5,7 +5,7 @@ export class ConfettiParticle {
     this.r = Math.random() * 6 + 2;
     this.dx = Math.random() * 2 - 1;
     this.dy = Math.random() * 3 + 2;
-    this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+    this.color = `hsl(0 0% ${Math.random() * 55 + 35}%)`;
   }
 
   update() {
@@ -32,7 +32,8 @@ export class ConfettiSystem {
     this.particles = [];
     this.animationId = null;
     this.setupCanvas();
-    window.addEventListener('resize', () => this.setupCanvas());
+    this.handleResize = () => this.setupCanvas();
+    window.addEventListener('resize', this.handleResize);
   }
 
   setupCanvas() {
@@ -41,26 +42,20 @@ export class ConfettiSystem {
   }
 
   spawn(count = 150) {
-    this.particles = [];
-    for (let i = 0; i < count; i++) {
-      this.particles.push(
-        new ConfettiParticle(this.canvas.width, this.canvas.height)
-      );
+    this.stop();
+    for (let index = 0; index < count; index += 1) {
+      this.particles.push(new ConfettiParticle(this.canvas.width, this.canvas.height));
     }
     this.animate();
   }
 
   animate() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.particles.forEach((p) => {
-      p.update();
-      p.draw(this.ctx);
+    this.particles.forEach((particle) => {
+      particle.update();
+      particle.draw(this.ctx);
     });
-
-    this.particles = this.particles.filter(
-      (p) => !p.isOffScreen(this.canvas.height)
-    );
+    this.particles = this.particles.filter((particle) => !particle.isOffScreen(this.canvas.height));
 
     if (this.particles.length > 0) {
       this.animationId = requestAnimationFrame(() => this.animate());
@@ -68,11 +63,14 @@ export class ConfettiSystem {
   }
 
   stop() {
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId);
-      this.animationId = null;
-    }
+    if (this.animationId) cancelAnimationFrame(this.animationId);
+    this.animationId = null;
     this.particles = [];
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx?.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  destroy() {
+    this.stop();
+    window.removeEventListener('resize', this.handleResize);
   }
 }

@@ -47,7 +47,7 @@ export default function FilmForm() {
       <h2 className="text-lg font-bold mb-4 text-gray-100">Adicionar Novo Filme</h2>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-900 border border-red-800 text-red-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg text-sm">
           {error}
         </div>
       )}
@@ -96,7 +96,7 @@ export default function FilmForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-3 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          className="w-full px-3 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
           {loading ? 'Adicionando...' : '➕ Adicionar Filme'}
         </button>

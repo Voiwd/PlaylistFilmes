@@ -3,51 +3,80 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+    background-color: #0a0a0a;
+  }
+
   body {
     @apply bg-gray-950 text-gray-200 font-sans;
   }
 }
 
 @layer components {
-  /* Fade animation for roulette result */
-  #resultadoRoleta {
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  .film-card {
+    animation: card-enter 360ms ease-out both;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease, border-color 260ms ease;
   }
 
-  #resultadoRoleta.show {
-    opacity: 1;
-    transform: translateY(0);
+  .film-card:hover {
+    transform: translateY(-10px) scale(1.06) rotate(-1deg);
+    box-shadow: 0 24px 36px rgb(0 0 0 / 0.62);
+    border-color: #a3a3a3;
   }
 
-  /* Roulette button feedback */
-  #btnRoleta {
-    transition: transform 0.2s ease, background 0.3s ease;
+  .film-card img {
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), filter 320ms ease;
   }
 
-  #btnRoleta:active {
-    transform: scale(0.95);
+  .film-card:hover img {
+    transform: scale(1.08);
+    filter: brightness(1.12) contrast(1.04);
   }
 
-  /* Card entrance animation */
-  .card {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  .interactive-button {
+    transition: transform 160ms ease, filter 160ms ease;
   }
 
-  .card.show {
-    opacity: 1;
-    transform: translateY(0);
+  .interactive-button:hover:not(:disabled) {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
   }
 
-  /* Admin section styling */
+  .interactive-button:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  .roulette-overlay {
+    animation: overlay-enter 200ms ease-out both;
+  }
+
+  .roulette-card {
+    animation: roulette-card-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
   .admin-section {
     @apply flex gap-2 flex-wrap;
   }
 
   .admin-btn {
-    @apply px-3 py-1 text-xs rounded bg-red-600 hover:bg-red-700 text-white transition-colors;
+    @apply px-3 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600 text-white transition-colors duration-150;
   }
+}
+
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes overlay-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes roulette-card-enter {
+  from { opacity: 0; transform: translateY(18px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }

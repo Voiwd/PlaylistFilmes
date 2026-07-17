@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFilmStore } from '../../store/useFilmStore';
 import { updateFilm } from '../../services/firebaseService';
 
@@ -6,7 +6,19 @@ export default function EditFilmModal() {
   const { editingFilm, isEditModalOpen, closeEditModal } = useFilmStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState(editingFilm || {});
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    if (editingFilm) {
+      setFormData({
+        nome: editingFilm.nome || '',
+        imagem: editingFilm.imagem || '',
+        descricao: editingFilm.descricao || '',
+        lancamento: editingFilm.lancamento || '',
+      });
+      setError('');
+    }
+  }, [editingFilm]);
 
   if (!isEditModalOpen || !editingFilm) return null;
 
@@ -56,7 +68,7 @@ export default function EditFilmModal() {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
-            <div className="p-3 bg-red-900 border border-red-800 text-red-200 rounded-lg text-sm">
+            <div className="p-3 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -113,7 +125,7 @@ export default function EditFilmModal() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium transition-colors disabled:opacity-50 text-sm"
+              className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium disabled:opacity-50 text-sm"
             >
               {loading ? 'Salvando...' : 'Salvar'}
             </button>
@@ -121,7 +133,7 @@ export default function EditFilmModal() {
               type="button"
               onClick={closeEditModal}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-medium transition-colors disabled:opacity-50 text-sm"
+              className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-medium disabled:opacity-50 text-sm"
             >
               Cancelar
             </button>
