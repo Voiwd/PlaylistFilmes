@@ -3,13 +3,18 @@ export class ConfettiParticle {
     this.x = Math.random() * canvasWidth;
     this.y = Math.random() * -50;
     this.r = Math.random() * 6 + 2;
-    this.dx = Math.random() * 2 - 1;
+    this.dx = (Math.random() * 2 - 1) * 1.2;
     this.dy = Math.random() * 3 + 2;
-    this.color = `hsl(0 0% ${Math.random() * 55 + 35}%)`;
+    this.offset = Math.random() * Math.PI * 2;
+    this.size = Math.random() * 2 + 1.5;
+    this.hue = Math.floor(Math.random() * 360);
+    this.saturation = Math.floor(70 + Math.random() * 25);
+    this.lightness = Math.floor(45 + Math.random() * 20);
+    this.color = `hsl(${this.hue} ${this.saturation}% ${this.lightness}%)`;
   }
 
   update() {
-    this.x += this.dx;
+    this.x += this.dx + Math.sin(this.y / 20 + this.offset) * 0.03;
     this.y += this.dy;
   }
 

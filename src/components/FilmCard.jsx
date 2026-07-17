@@ -20,7 +20,7 @@ export default function FilmCard({ film }) {
   };
 
   return (
-    <div className="film-card bg-gray-900 rounded-lg overflow-hidden shadow-lg border border-gray-800">
+    <div className="film-card w-full bg-gray-900 rounded-lg overflow-hidden shadow-lg border border-gray-800">
       <img
         src={film.imagem}
         alt={film.nome}

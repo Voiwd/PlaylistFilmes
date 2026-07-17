@@ -30,27 +30,27 @@ export default function Roulette() {
     <div className="py-4 px-0 text-center">
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 z-[60] pointer-events-none"
+        className="fixed inset-0 z-[40] pointer-events-none"
         aria-hidden="true"
       />
       <button
         onClick={handleSpin}
         disabled={films.length === 0}
-        className="interactive-button px-4 py-2 bg-gray-100 hover:bg-white text-black font-bold rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        className="interactive-button group relative overflow-hidden rounded-xl border border-green-400/40 bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_16px_rgba(16,185,129,0.25)] transition duration-300 hover:bg-gradient-to-g hover:from-fuchsia-500 hover:via-cyan-500 hover:to-emerald-500 hover:shadow-[0_0_24px_rgba(34,211,238,0.35)] disabled:cursor-not-allowed disabled:opacity-50"
       >
-        🌐 Sortear Filme
+        <span className="relative z-10">🎊 Sortear Filme</span>
       </button>
 
       {selectedFilm && (
         <div
-          className="roulette-overlay fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
+          className="roulette-overlay fixed inset-0 z-[50] flex items-center justify-center bg-black bg-opacity-75 p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="roulette-film-title"
           onClick={() => setSelectedFilm(null)}
         >
           <div
-            className="roulette-card relative w-full max-w-sm overflow-hidden rounded-lg border border-gray-700 bg-gray-900 text-center shadow-2xl"
+            className="roulette-card relative z-[60] w-full max-w-sm overflow-hidden rounded-lg border border-gray-700 bg-gray-900 text-center shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <button

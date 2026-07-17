@@ -21,7 +21,7 @@ export default function FilmList() {
   const displayedFilms = sortFilms(filteredFilms);
 
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-5 auto-rows-max">
+    <div className="mx-auto grid max-w-7xl grid-cols-2 gap-5 auto-rows-max justify-items-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {displayedFilms.length > 0 ? (
         displayedFilms.map((film) => (
           <FilmCard key={film.id} film={film} />
