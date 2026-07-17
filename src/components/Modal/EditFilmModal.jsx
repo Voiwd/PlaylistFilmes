@@ -43,12 +43,12 @@ export default function EditFilmModal() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-900 rounded-lg shadow-2xl max-w-md w-full border border-slate-700">
-        <div className="flex justify-between items-center p-6 border-b border-slate-700">
+      <div className="bg-gray-900 rounded-lg shadow-2xl max-w-md w-full border border-gray-800">
+        <div className="flex justify-between items-center p-6 border-b border-gray-800">
           <h2 className="text-xl font-bold">Editar Filme</h2>
           <button
             onClick={closeEditModal}
-            className="text-slate-400 hover:text-slate-200 text-2xl leading-none"
+            className="text-gray-400 hover:text-gray-200 text-2xl leading-none"
           >
             ×
           </button>
@@ -56,7 +56,7 @@ export default function EditFilmModal() {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
-            <div className="p-3 bg-red-900 border border-red-700 text-red-200 rounded-lg text-sm">
+            <div className="p-3 bg-red-900 border border-red-800 text-red-200 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -69,7 +69,7 @@ export default function EditFilmModal() {
               value={formData.nome || ''}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
             />
           </div>
 
@@ -81,7 +81,7 @@ export default function EditFilmModal() {
               value={formData.imagem || ''}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
             />
           </div>
 
@@ -93,7 +93,7 @@ export default function EditFilmModal() {
               onChange={handleChange}
               rows="3"
               disabled={loading}
-              className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm resize-none"
             />
           </div>
 
@@ -105,7 +105,7 @@ export default function EditFilmModal() {
               value={formData.lancamento || ''}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
             />
           </div>
 
@@ -113,7 +113,7 @@ export default function EditFilmModal() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium transition-colors disabled:opacity-50 text-sm"
             >
               {loading ? 'Salvando...' : 'Salvar'}
             </button>
@@ -121,7 +121,7 @@ export default function EditFilmModal() {
               type="button"
               onClick={closeEditModal}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-medium transition-colors disabled:opacity-50 text-sm"
             >
               Cancelar
             </button>

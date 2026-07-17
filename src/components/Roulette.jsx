@@ -37,7 +37,7 @@ export default function Roulette() {
   };
 
   return (
-    <div className="py-8 px-6 text-center">
+    <div className="py-4 px-0 text-center">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 pointer-events-none z-40"
@@ -47,25 +47,25 @@ export default function Roulette() {
       <button
         onClick={handleSpin}
         disabled={isSpinning || films.length === 0}
-        className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+        className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
       >
         🌐 {isSpinning ? 'Girando...' : 'Sortear Filme'}
       </button>
 
       {selectedFilm && (
-        <div className="show mt-6 p-6 bg-slate-900 rounded-lg border border-slate-700 inline-block">
-          <p className="text-xl font-bold mb-3">
+        <div className="show mt-4 p-4 bg-gray-900 rounded-lg border border-gray-800 inline-block">
+          <p className="text-lg font-bold mb-2">
             🎬 Filme sorteado:
           </p>
-          <p className="text-2xl font-bold text-green-400">{selectedFilm.nome}</p>
+          <p className="text-xl font-bold text-green-400">{selectedFilm.nome}</p>
           {selectedFilm.descricao && (
-            <p className="text-slate-400 mt-3">{selectedFilm.descricao}</p>
+            <p className="text-gray-400 mt-2 text-sm">{selectedFilm.descricao}</p>
           )}
         </div>
       )}
 
       {films.length === 0 && (
-        <p className="mt-4 text-slate-400">
+        <p className="mt-3 text-gray-400 text-sm">
           Nenhum filme na playlist. Adicione alguns para começar!
         </p>
       )}

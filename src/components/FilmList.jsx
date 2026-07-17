@@ -21,18 +21,18 @@ export default function FilmList() {
   const displayedFilms = sortFilms(filteredFilms);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-max">
       {displayedFilms.length > 0 ? (
         displayedFilms.map((film) => (
           <FilmCard key={film.id} film={film} />
         ))
       ) : films.length === 0 ? (
         <div className="col-span-full text-center py-12">
-          <p className="text-slate-400 text-lg">Nenhum filme adicionado ainda. Comece agora!</p>
+          <p className="text-gray-400 text-sm">Nenhum filme adicionado ainda. Comece agora!</p>
         </div>
       ) : (
         <div className="col-span-full text-center py-12">
-          <p className="text-slate-400 text-lg">Nenhum filme encontrado com essa busca.</p>
+          <p className="text-gray-400 text-sm">Nenhum filme encontrado com essa busca.</p>
         </div>
       )}
     </div>

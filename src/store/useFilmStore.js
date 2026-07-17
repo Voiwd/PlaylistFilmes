@@ -5,6 +5,7 @@ export const useFilmStore = create((set) => ({
   adminMode: false,
   editingFilm: null,
   isEditModalOpen: false,
+  isPasswordModalOpen: false,
 
   // Actions for films
   setFilms: (films) => set({ films }),
@@ -25,6 +26,16 @@ export const useFilmStore = create((set) => ({
       editingFilm: null,
       isEditModalOpen: false,
     })),
+
+  openPasswordModal: () =>
+    set({
+      isPasswordModalOpen: true,
+    }),
+
+  closePasswordModal: () =>
+    set({
+      isPasswordModalOpen: false,
+    }),
 
   // Edit modal
   openEditModal: (film) =>

@@ -42,24 +42,24 @@ export default function FilmForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-slate-900 p-6 rounded-lg shadow-lg border border-slate-700"
+      className="bg-gray-900 p-5 rounded-lg shadow-lg border border-gray-800"
     >
-      <h2 className="text-xl font-bold mb-4">Adicionar Novo Filme</h2>
+      <h2 className="text-lg font-bold mb-4 text-gray-100">Adicionar Novo Filme</h2>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-900 border border-red-700 text-red-200 rounded-lg">
+        <div className="mb-4 p-3 bg-red-900 border border-red-800 text-red-200 rounded-lg text-sm">
           {error}
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         <input
           type="text"
           name="nome"
           placeholder="Nome do filme *"
           required
           disabled={loading}
-          className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
         />
 
         <input
@@ -67,22 +67,22 @@ export default function FilmForm() {
           name="imagem"
           placeholder="URL da imagem (opcional)"
           disabled={loading}
-          className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
         />
 
         <textarea
           name="descricao"
           placeholder="Descrição (opcional)"
-          rows="3"
+          rows="2"
           disabled={loading}
-          className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm resize-none"
         />
 
         <input
           type="date"
           name="lancamento"
           disabled={loading}
-          className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
         />
 
         <input
@@ -90,15 +90,15 @@ export default function FilmForm() {
           name="adicionadoPor"
           placeholder="Seu nome (opcional)"
           disabled={loading}
-          className="w-full px-4 py-2 bg-slate-800 text-slate-200 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-3 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
-          {loading ? 'Adicionando...' : 'Adicionar Filme'}
+          {loading ? 'Adicionando...' : '➕ Adicionar Filme'}
         </button>
       </div>
     </form>
