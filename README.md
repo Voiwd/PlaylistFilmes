@@ -1,13 +1,160 @@
 
 
-# Playlist de Filmes
-![preview](preview.png)
-Site pra modificar a playlist de filmes dos gurizes
+# Playlist de Filmes - React Edition 🎬
 
-### Clique [aqui](https://voiwd.github.io/siteFilmes/) para acessar o site! 🎞️📽️
+Site para gerenciar uma playlist colaborativa de filmes.
 
-### Use este site para
+**[Acesse o site aqui!](https://voiwd.github.io/PlaylistFilmes/)** 🎞️📽️
 
-1. Adicionar um novo filme à playlist
-2. Listar sugestões e ideias de filmes dados
-3. Organizar filmes por data e nome
+## Funcionalidades
+
+- ✅ Adicionar novos filmes à playlist
+- ✅ Buscar filmes por nome, descrição ou autor
+- ✅ Ordenar filmes por data de adição, lançamento ou nome
+- ✅ Sortear filme aleatório (com efeito confete! 🎉)
+- ✅ Modo admin para editar ou apagar filmes
+- ✅ Interface moderna com Tailwind CSS
+- ✅ Sincronização em tempo real com Firebase
+
+## Stack Técnico
+
+- **Frontend**: React 18 + Vite
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Backend**: Firebase Realtime Database
+- **Build**: Vite
+
+## Setup e Desenvolvimento
+
+### Pré-requisitos
+- Node.js 16+ e npm
+
+### Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/Voiwd/PlaylistFilmes.git
+cd PlaylistFilmes
+
+# Instale as dependências
+npm install
+```
+
+### Variáveis de Ambiente
+
+1. Copie `.env.example` para `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+2. Preencha os valores do Firebase em `.env.local`:
+```env
+VITE_FIREBASE_API_KEY=sua_chave_aqui
+VITE_FIREBASE_AUTH_DOMAIN=seu_dominio.firebaseapp.com
+# ... outros valores
+```
+
+**⚠️ IMPORTANTE**: Nunca comite `.env.local`! Ele está no `.gitignore`.
+
+### Executar em Desenvolvimento
+
+```bash
+npm run dev
+```
+
+O app será aberto em `http://localhost:5173`
+
+### Build para Produção
+
+```bash
+npm run build
+```
+
+A build será gerada em `./dist/`
+
+## Como Usar
+
+### Adicionar Filme
+1. Preencha o formulário com os dados do filme
+2. Clique em "Adicionar Filme"
+3. O filme aparecerá na grid com os outros
+
+### Buscar Filme
+Use a barra de busca no topo - ela filtra por nome, descrição ou autor em tempo real.
+
+### Ordenar Filmes
+Use o dropdown "Ordenar por" para escolher:
+- Data de Adição (mais recentes primeiro)
+- Data de Lançamento
+- Nome (A-Z)
+
+### Sortear Filme
+Clique no botão "🌐 Sortear Filme" para escolher um aleatoriamente. Confete explode! 🎉
+
+### Modo Admin
+**Atalho**: `Ctrl + Alt + 0`
+
+No modo admin, você pode:
+- ✏️ Editar filmes (formulário modal, melhor que prompts!)
+- 🗑️ Apagar filmes
+
+## Estrutura do Projeto
+
+```
+src/
+├── App.jsx                    # Componente raiz
+├── main.jsx                   # Entry point
+├── index.css                  # Tailwind + estilos
+├── components/
+│   ├── Header.jsx
+│   ├── SearchBar.jsx
+│   ├── FilmForm.jsx
+│   ├── FilmCard.jsx
+│   ├── FilmList.jsx
+│   ├── FilterSortBar.jsx
+│   ├── AdminBar.jsx
+│   ├── Roulette.jsx
+│   └── Modal/
+│       └── EditFilmModal.jsx
+├── store/
+│   ├── useFilmStore.js        # Zustand: filmes, admin mode
+│   └── useSearchStore.js      # Zustand: busca, ordenação
+├── services/
+│   └── firebaseService.js     # Operações Firebase CRUD
+└── utils/
+    └── confetti.js            # Sistema de confete
+```
+
+## Segurança
+
+- 🔐 Credenciais Firebase movidas para `.env.local`
+- 🚫 `.gitignore` protege variáveis de ambiente
+- ✅ Sem hardcoding de segredos no código
+
+## Melhorias Implementadas
+
+vs. versão anterior (single-file HTML):
+
+1. **Modularização**: Componentes reutilizáveis e organizados
+2. **UX de Edição**: Modal com form em vez de series de prompts
+3. **Barra de Busca**: Filtro em tempo real
+4. **Segurança**: API key em variáveis de ambiente
+5. **Performance**: Build otimizado com Vite
+6. **Manutenibilidade**: Código limpo e bem estruturado
+7. **State Management**: Zustand para estado previsível
+
+## Problemas Conhecidos e Resolvidos
+
+- ✅ API key do Firebase exposta no código → Movida para `.env.local`
+- ✅ Edição via prompts era ruim → Substituída por modal
+- ✅ Sem busca/filtro → Implementada com store compartilhado
+- ✅ Código em single file → Refatorado em componentes
+
+## Contribuindo
+
+Sinta-se livre para abrir issues e pull requests!
+
+## Licença
+
+MIT
+

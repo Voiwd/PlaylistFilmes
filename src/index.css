@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-200 font-sans;
+  }
+}
+
+@layer components {
+  /* Fade animation for roulette result */
+  #resultadoRoleta {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  }
+
+  #resultadoRoleta.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Roulette button feedback */
+  #btnRoleta {
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+
+  #btnRoleta:active {
+    transform: scale(0.95);
+  }
+
+  /* Card entrance animation */
+  .card {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  }
+
+  .card.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Admin section styling */
+  .admin-section {
+    @apply flex gap-2 flex-wrap;
+  }
+
+  .admin-btn {
+    @apply px-3 py-1 text-xs rounded bg-red-600 hover:bg-red-700 text-white transition-colors;
+  }
+}
