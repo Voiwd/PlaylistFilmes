@@ -50,17 +50,18 @@ npm install
 cp .env.example .env.local
 ```
 
-2. Preencha os valores do Firebase, TMDB e Watchmode em `.env.local`:
+2. Preencha os valores publicos do Firebase e as variaveis privadas das Functions em `.env.local`:
 ```env
-VITE_FIREBASE_API_KEY=sua_chave_aqui
-VITE_FIREBASE_AUTH_DOMAIN=seu_dominio.firebaseapp.com
+APP_FIREBASE_API_KEY=sua_chave_aqui
+APP_FIREBASE_AUTH_DOMAIN=seu_dominio.firebaseapp.com
 # ... outros valores
-VITE_TMDB_API_KEY=sua_tmdb_key_aqui
-VITE_WATCHMODE_API_KEY=sua_watchmode_key_aqui
-VITE_DEFAULT_COUNTRY=BR
+TMDB_API_KEY=sua_tmdb_key_aqui
+WATCHMODE_API_KEY=sua_watchmode_key_aqui
+ADMIN_PASSWORD=uma_senha_forte
+APP_DEFAULT_COUNTRY=BR
 ```
 
-**⚠️ IMPORTANTE**: Nunca comite `.env.local`! Ele está no `.gitignore`.
+**⚠️ IMPORTANTE**: Nunca comite `.env.local`! Ele está no `.gitignore`. Na Vercel, cadastre `TMDB_API_KEY`, `TMDB_ACCESS_TOKEN` (se usar), `WATCHMODE_API_KEY` e `ADMIN_PASSWORD` nas Environment Variables do projeto.
 
 ### Executar em Desenvolvimento
 
@@ -69,6 +70,12 @@ npm run dev
 ```
 
 O app será aberto em `http://localhost:5173`
+
+Para testar também as Vercel Functions localmente, use:
+
+```bash
+npm run dev:vercel
+```
 
 ### Build para Produção
 
@@ -134,9 +141,9 @@ src/
 
 ## Segurança
 
-- 🔐 Credenciais Firebase movidas para `.env.local`
-- 🚫 `.gitignore` protege variáveis de ambiente
-- ✅ Sem hardcoding de segredos no código
+- 🔐 Chaves TMDB, Watchmode e senha admin ficam somente nas Vercel Functions
+- 🚫 `.gitignore` protege variáveis de ambiente locais
+- ✅ O bundle do navegador não contém esses segredos
 
 ## Melhorias Implementadas
 

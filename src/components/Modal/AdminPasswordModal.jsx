@@ -4,17 +4,25 @@ export default function AdminPasswordModal({ isOpen, onClose, onSubmit }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
-    const correctPassword = import.meta.env.VITE_ADMIN_PASSWORD;
-    
-    if (password === correctPassword) {
+    try {
+      const response = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Senha incorreta!');
+      }
+
       onSubmit();
       setPassword('');
-    } else {
-      setError('Senha incorreta!');
+    } catch {
+      setError('Senha incorreta ou verificacao indisponivel.');
       setPassword('');
     }
   };

@@ -12,7 +12,7 @@ import {
 } from './watchmodeService';
 
 function buildCountryCode(country) {
-  return (country || import.meta.env.VITE_DEFAULT_COUNTRY || 'BR').trim().toUpperCase();
+  return (country || import.meta.env.APP_DEFAULT_COUNTRY || 'BR').trim().toUpperCase();
 }
 
 export async function searchMoviesForForm(query, options = {}) {

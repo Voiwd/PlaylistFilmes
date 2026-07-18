@@ -1,34 +1,11 @@
-const WATCHMODE_API_BASE_URL = 'https://api.watchmode.com/v1';
+const defaultCountry = import.meta.env.APP_DEFAULT_COUNTRY?.trim() || 'BR';
 
-const watchmodeApiKey = import.meta.env.VITE_WATCHMODE_API_KEY?.trim();
-const defaultCountry = import.meta.env.VITE_DEFAULT_COUNTRY?.trim() || 'BR';
+async function watchmodeFetch(params, options = {}) {
+  const url = new URL('/api/watchmode', window.location.origin);
+  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
 
-function buildWatchmodeUrl(path, params = {}) {
-  const url = new URL(`${WATCHMODE_API_BASE_URL}${path}`);
-
-  if (watchmodeApiKey) {
-    url.searchParams.set('apiKey', watchmodeApiKey);
-  }
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
-      url.searchParams.set(key, value);
-    }
-  });
-
-  return url;
-}
-
-async function watchmodeFetch(path, params = {}, options = {}) {
-  if (!watchmodeApiKey) {
-    throw new Error('Watchmode não configurado. Defina VITE_WATCHMODE_API_KEY.');
-  }
-
-  const response = await fetch(buildWatchmodeUrl(path, params), {
+  const response = await fetch(url, {
     signal: options.signal,
-    headers: {
-      accept: 'application/json',
-    },
   });
 
   if (!response.ok) {
@@ -129,15 +106,7 @@ export async function searchWatchmodeTitleByTmdbId(tmdbId, options = {}) {
   if (!tmdbId) return null;
 
   try {
-    const data = await watchmodeFetch(
-      '/search/',
-      {
-        search_field: 'tmdb_movie_id',
-        search_value: String(tmdbId),
-        types: 'movie',
-      },
-      options
-    );
+    const data = await watchmodeFetch({ action: 'search-tmdb', tmdbId: String(tmdbId) }, options);
 
     const results = extractResults(data).map(normalizeWatchmodeSearchResult).filter(Boolean);
     return results[0] || null;
@@ -151,15 +120,7 @@ export async function searchWatchmodeTitleByName(title, options = {}) {
   const normalizedTitle = title?.trim();
   if (!normalizedTitle) return null;
 
-  const data = await watchmodeFetch(
-    '/search/',
-    {
-      search_field: 'name',
-      search_value: normalizedTitle,
-      types: 'movie',
-    },
-    options
-  );
+  const data = await watchmodeFetch({ action: 'search-title', title: normalizedTitle }, options);
 
   const results = extractResults(data).map(normalizeWatchmodeSearchResult).filter(Boolean);
   return results[0] || null;
@@ -168,20 +129,18 @@ export async function searchWatchmodeTitleByName(title, options = {}) {
 export async function getWatchmodeTitleDetails(titleId, options = {}) {
   if (!titleId) return null;
 
-  const data = await watchmodeFetch(`/title/${titleId}/details`, {}, options);
+  const data = await watchmodeFetch({ action: 'details', titleId: String(titleId) }, options);
   return normalizeWatchmodeDetails(data);
 }
 
 export async function getWatchmodeTitleSources(titleId, options = {}) {
   if (!titleId) return [];
 
-  const data = await watchmodeFetch(
-    `/title/${titleId}/sources`,
-    {
-      regions: options.country || defaultCountry,
-    },
-    options
-  );
+  const data = await watchmodeFetch({
+    action: 'sources',
+    titleId: String(titleId),
+    country: options.country || defaultCountry,
+  }, options);
 
   return extractResults(data).map(normalizeWatchmodeSource).filter(Boolean);
 }

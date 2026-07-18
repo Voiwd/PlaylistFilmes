@@ -1,49 +1,14 @@
-const TMDB_API_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const tmdbApiKey = import.meta.env.VITE_TMDB_API_KEY?.trim();
-const tmdbAccessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN?.trim();
-const defaultLanguage = import.meta.env.VITE_TMDB_LANGUAGE?.trim() || 'pt-BR';
-const defaultRegion = import.meta.env.VITE_TMDB_REGION?.trim() || 'BR';
+const defaultLanguage = import.meta.env.APP_TMDB_LANGUAGE?.trim() || 'pt-BR';
+const defaultRegion = import.meta.env.APP_TMDB_REGION?.trim() || 'BR';
 
-function buildTmdbHeaders() {
-  const headers = {
-    accept: 'application/json',
-  };
+async function tmdbFetch(params, options = {}) {
+  const url = new URL('/api/tmdb', window.location.origin);
+  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
 
-  if (tmdbAccessToken) {
-    headers.Authorization = `Bearer ${tmdbAccessToken}`;
-  }
-
-  return headers;
-}
-
-function buildTmdbUrl(path, params = {}) {
-  const url = new URL(`${TMDB_API_BASE_URL}${path}`);
-
-  if (tmdbApiKey) {
-    url.searchParams.set('api_key', tmdbApiKey);
-  }
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
-      url.searchParams.set(key, value);
-    }
-  });
-
-  return url;
-}
-
-async function tmdbFetch(path, params = {}, options = {}) {
-  if (!tmdbApiKey && !tmdbAccessToken) {
-    throw new Error(
-      'TMDB não configurado. Defina VITE_TMDB_API_KEY ou VITE_TMDB_ACCESS_TOKEN.'
-    );
-  }
-
-  const response = await fetch(buildTmdbUrl(path, params), {
+  const response = await fetch(url, {
     signal: options.signal,
-    headers: buildTmdbHeaders(),
   });
 
   if (!response.ok) {
@@ -93,17 +58,12 @@ export async function searchTmdbMovies(query, options = {}) {
 
   if (!normalizedQuery) return [];
 
-  const data = await tmdbFetch(
-    '/search/movie',
-    {
-      query: normalizedQuery,
-      include_adult: 'false',
-      language: options.language || defaultLanguage,
-      region: options.region || defaultRegion,
-      page: '1',
-    },
-    options
-  );
+  const data = await tmdbFetch({
+    action: 'search',
+    query: normalizedQuery,
+    language: options.language || defaultLanguage,
+    region: options.region || defaultRegion,
+  }, options);
 
   return Array.isArray(data?.results) ? data.results.map(normalizeTmdbMovie) : [];
 }
@@ -113,14 +73,12 @@ export async function getTmdbMovieDetails(movieId, options = {}) {
     throw new Error('TMDB movieId ausente.');
   }
 
-  const data = await tmdbFetch(
-    `/movie/${movieId}`,
-    {
-      language: options.language || defaultLanguage,
-      region: options.region || defaultRegion,
-    },
-    options
-  );
+  const data = await tmdbFetch({
+    action: 'details',
+    movieId: String(movieId),
+    language: options.language || defaultLanguage,
+    region: options.region || defaultRegion,
+  }, options);
 
   return normalizeTmdbMovie(data);
 }

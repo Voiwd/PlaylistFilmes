@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { addFilm } from '../services/firebaseService';
 import { enrichMovieFromTmdb, searchMoviesForForm } from '../services/movieDiscoveryService';
 
-const defaultCountry = import.meta.env.VITE_DEFAULT_COUNTRY?.trim() || 'BR';
+const defaultCountry = import.meta.env.APP_DEFAULT_COUNTRY?.trim() || 'BR';
 
 const initialFormData = {
   nome: '',
