@@ -1,4 +1,4 @@
-# 🎬 Playlist de Filmes
+<h1 align="center">🎬 Playlist de Filmes</h1>
 
 <p align="center">
 	<img src="https://img.shields.io/badge/React-18-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" />
