@@ -12,8 +12,10 @@ export default function EditFilmModal() {
     if (editingFilm) {
       setFormData({
         nome: editingFilm.nome || '',
-        imagem: editingFilm.imagem || '',
-        descricao: editingFilm.descricao || '',
+        imagem: editingFilm.imagem || editingFilm.posterUrl || '',
+        posterUrl: editingFilm.posterUrl || editingFilm.imagem || '',
+        descricao: editingFilm.descricao || editingFilm.overview || '',
+        overview: editingFilm.overview || editingFilm.descricao || '',
         lancamento: editingFilm.lancamento || '',
       });
       setError('');
@@ -22,13 +24,34 @@ export default function EditFilmModal() {
 
   if (!isEditModalOpen || !editingFilm) return null;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData((current) => {
+      const next = { ...current, [name]: value };
+
+      if (name === 'imagem' && !current.posterUrl) {
+        next.posterUrl = value;
+      }
+
+      if (name === 'posterUrl' && !current.imagem) {
+        next.imagem = value;
+      }
+
+      if (name === 'descricao' && !current.overview) {
+        next.overview = value;
+      }
+
+      if (name === 'overview' && !current.descricao) {
+        next.descricao = value;
+      }
+
+      return next;
+    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError('');
 
     if (!formData.nome.trim()) {
@@ -41,7 +64,9 @@ export default function EditFilmModal() {
       await updateFilm(editingFilm.id, {
         nome: formData.nome.trim(),
         descricao: formData.descricao?.trim() || '',
+        overview: formData.overview?.trim() || formData.descricao?.trim() || '',
         imagem: formData.imagem?.trim() || '',
+        posterUrl: formData.posterUrl?.trim() || formData.imagem?.trim() || '',
         lancamento: formData.lancamento || '',
       });
       closeEditModal();
@@ -54,78 +79,120 @@ export default function EditFilmModal() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 rounded-lg shadow-2xl max-w-md w-full border border-gray-800">
-        <div className="flex justify-between items-center p-6 border-b border-gray-800">
-          <h2 className="text-xl font-bold">Editar Filme</h2>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 sm:items-center">
+      <div className="flex w-full max-w-lg max-h-[calc(100vh-2rem)] flex-col overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-gray-800 p-6">
+          <div>
+            <h2 className="text-xl font-bold text-gray-100">Editar Filme</h2>
+            <p className="mt-1 text-xs text-gray-400">
+              Alterações manuais preservam os campos TMDB/Watchmode já salvos.
+            </p>
+          </div>
           <button
             onClick={closeEditModal}
-            className="text-gray-400 hover:text-gray-200 text-2xl leading-none"
+            className="text-2xl leading-none text-gray-400 hover:text-gray-200"
           >
             ×
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="flex-1 space-y-4 overflow-y-auto p-6">
           {error && (
-            <div className="p-3 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg text-sm">
+            <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-100">
               {error}
             </div>
           )}
 
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg border border-gray-800 bg-gray-950/40 p-3 text-xs text-gray-400">
+              <span className="block font-semibold text-gray-300">TMDB ID</span>
+              <span>{editingFilm.tmdbId || 'Não definido'}</span>
+            </div>
+            <div className="rounded-lg border border-gray-800 bg-gray-950/40 p-3 text-xs text-gray-400">
+              <span className="block font-semibold text-gray-300">Watchmode ID</span>
+              <span>{editingFilm.watchmodeId || 'Não definido'}</span>
+            </div>
+          </div>
+
           <div>
-            <label className="block text-sm font-semibold mb-2">Nome do Filme *</label>
+            <label className="mb-2 block text-sm font-semibold text-gray-200">Nome do Filme *</label>
             <input
               type="text"
               name="nome"
               value={formData.nome || ''}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">URL da Imagem</label>
+            <label className="mb-2 block text-sm font-semibold text-gray-200">Poster URL</label>
+            <input
+              type="url"
+              name="posterUrl"
+              value={formData.posterUrl || ''}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-gray-200">Imagem legado</label>
             <input
               type="url"
               name="imagem"
               value={formData.imagem || ''}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">Descrição</label>
+            <label className="mb-2 block text-sm font-semibold text-gray-200">Sinopse</label>
             <textarea
               name="descricao"
               value={formData.descricao || ''}
               onChange={handleChange}
-              rows="3"
+              rows="4"
               disabled={loading}
-              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm resize-none"
+              className="w-full resize-none rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">Data de Lançamento</label>
+            <label className="mb-2 block text-sm font-semibold text-gray-200">Overview legado</label>
+            <textarea
+              name="overview"
+              value={formData.overview || ''}
+              onChange={handleChange}
+              rows="4"
+              disabled={loading}
+              className="w-full resize-none rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-gray-200">
+              Data de Lançamento
+            </label>
             <input
               type="date"
               name="lancamento"
               value={formData.lancamento || ''}
               onChange={handleChange}
               disabled={loading}
-              className="w-full px-4 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-2">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium disabled:opacity-50 text-sm"
+              className="flex-1 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-500 disabled:opacity-50"
             >
               {loading ? 'Salvando...' : 'Salvar'}
             </button>
@@ -133,7 +200,7 @@ export default function EditFilmModal() {
               type="button"
               onClick={closeEditModal}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-medium disabled:opacity-50 text-sm"
+              className="flex-1 rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-colors hover:bg-gray-700 disabled:opacity-50"
             >
               Cancelar
             </button>

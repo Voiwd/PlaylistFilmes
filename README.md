@@ -9,7 +9,9 @@ Site para gerenciar uma playlist colaborativa de filmes.
 ## Funcionalidades
 
 - ✅ Adicionar novos filmes à playlist
-- ✅ Buscar filmes por nome, descrição ou autor
+- ✅ Buscar filmes por nome, descrição, autor e disponibilidade
+- ✅ Identificar filmes via TMDB e enriquecer com pôster/sinopse
+- ✅ Mostrar onde assistir e preço via Watchmode
 - ✅ Ordenar filmes por data de adição, lançamento ou nome
 - ✅ Sortear filme aleatório (com efeito confete! 🎉)
 - ✅ Modo admin para editar ou apagar filmes
@@ -22,6 +24,7 @@ Site para gerenciar uma playlist colaborativa de filmes.
 - **Styling**: Tailwind CSS
 - **State Management**: Zustand
 - **Backend**: Firebase Realtime Database
+- **Integrações**: TMDB + Watchmode
 - **Build**: Vite
 
 ## Setup e Desenvolvimento
@@ -47,11 +50,14 @@ npm install
 cp .env.example .env.local
 ```
 
-2. Preencha os valores do Firebase em `.env.local`:
+2. Preencha os valores do Firebase, TMDB e Watchmode em `.env.local`:
 ```env
 VITE_FIREBASE_API_KEY=sua_chave_aqui
 VITE_FIREBASE_AUTH_DOMAIN=seu_dominio.firebaseapp.com
 # ... outros valores
+VITE_TMDB_API_KEY=sua_tmdb_key_aqui
+VITE_WATCHMODE_API_KEY=sua_watchmode_key_aqui
+VITE_DEFAULT_COUNTRY=BR
 ```
 
 **⚠️ IMPORTANTE**: Nunca comite `.env.local`! Ele está no `.gitignore`.
@@ -75,12 +81,13 @@ A build será gerada em `./dist/`
 ## Como Usar
 
 ### Adicionar Filme
-1. Preencha o formulário com os dados do filme
-2. Clique em "Adicionar Filme"
-3. O filme aparecerá na grid com os outros
+1. Busque o filme no TMDB
+2. Selecione o resultado correto e confira os dados preenchidos
+3. Clique em "Salvar filme"
+4. O filme aparecerá na grid com pôster, sinopse e disponibilidade
 
 ### Buscar Filme
-Use a barra de busca no topo - ela filtra por nome, descrição ou autor em tempo real.
+Use a barra de busca no topo - ela filtra por nome, sinopse, autor e fornecedores em tempo real.
 
 ### Ordenar Filmes
 Use o dropdown "Ordenar por" para escolher:

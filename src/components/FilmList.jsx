@@ -28,7 +28,9 @@ export default function FilmList() {
         ))
       ) : films.length === 0 ? (
         <div className="col-span-full text-center py-12">
-          <p className="text-gray-400 text-sm">Nenhum filme adicionado ainda. Comece agora!</p>
+          <p className="text-gray-400 text-sm">
+            Nenhum filme adicionado ainda. Busque o primeiro no TMDB para começar!
+          </p>
         </div>
       ) : (
         <div className="col-span-full text-center py-12">

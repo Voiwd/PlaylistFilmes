@@ -50,14 +50,14 @@ const Roulette = forwardRef(function Roulette({ showTrigger = true }, ref) {
 
       {selectedFilm && (
         <div
-          className="roulette-overlay fixed inset-0 z-[50] flex items-center justify-center bg-black bg-opacity-75 p-4"
+          className="roulette-overlay fixed inset-0 z-[50] flex items-start justify-center overflow-y-auto bg-black bg-opacity-75 p-4 sm:items-center"
           role="dialog"
           aria-modal="true"
           aria-labelledby="roulette-film-title"
           onClick={() => setSelectedFilm(null)}
         >
           <div
-            className="roulette-card relative z-[60] w-full max-w-sm overflow-hidden rounded-lg border border-gray-700 bg-gray-900 text-center shadow-2xl"
+            className="roulette-card relative z-[60] flex w-full max-w-sm max-h-[calc(100vh-2rem)] flex-col overflow-hidden rounded-lg border border-gray-700 bg-gray-900 text-center shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <button
@@ -68,17 +68,19 @@ const Roulette = forwardRef(function Roulette({ showTrigger = true }, ref) {
             >
               ×
             </button>
-            <img
-              src={selectedFilm.imagem}
-              alt={selectedFilm.nome}
-              className="w-full aspect-[2/3] object-cover bg-gray-800"
-              onError={(event) => {
-                event.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"><rect fill="%23262626" width="300" height="450"/><text x="50%" y="50%" font-size="16" fill="%23a3a3a3" text-anchor="middle" dominant-baseline="middle" font-family="Arial">Sem Imagem</text></svg>';
-              }}
-            />
-            <div className="p-4 text-center">
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <img
+                src={selectedFilm.posterUrl || selectedFilm.imagem}
+                alt={selectedFilm.nome}
+                className="w-full aspect-[2/3] object-cover bg-gray-800"
+                onError={(event) => {
+                  event.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"><rect fill="%23262626" width="300" height="450"/><text x="50%" y="50%" font-size="16" fill="%23a3a3a3" text-anchor="middle" dominant-baseline="middle" font-family="Arial">Sem Imagem</text></svg>';
+                }}
+              />
+              <div className="p-4 text-center">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-300">Filme sorteado</p>
               <h2 id="roulette-film-title" className="mt-1 text-xl font-bold text-gray-100">{selectedFilm.nome}</h2>
+              </div>
             </div>
           </div>
         </div>
