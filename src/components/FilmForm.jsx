@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { addFilm } from '../services/firebaseService';
 
-export default function FilmForm() {
+export default function FilmForm({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +33,7 @@ export default function FilmForm() {
         adicionadoPor,
       });
       e.target.reset();
+      onClose?.();
     } catch (err) {
       setError('Erro ao adicionar filme. Tente novamente.');
       console.error(err);
@@ -40,67 +43,97 @@ export default function FilmForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-gray-900 p-5 rounded-lg shadow-lg border border-gray-800"
+    <div
+      className="roulette-overlay fixed inset-0 z-[50] flex items-center justify-center bg-black/75 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-film-title"
+      onClick={onClose}
     >
-      <h2 className="text-lg font-bold mb-4 text-gray-100">Adicionar Novo Filme</h2>
-
-      {error && (
-        <div className="mb-4 p-3 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg text-sm">
-          {error}
+      <div
+        className="roulette-card relative z-[60] w-full max-w-lg overflow-hidden rounded-lg border border-gray-700 bg-gray-900 shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-gray-800 p-5">
+          <h2 id="add-film-title" className="text-xl font-bold text-gray-100">
+            Adicionar Novo Filme
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="interactive-button text-3xl leading-none text-gray-400 hover:text-gray-200"
+            aria-label="Fechar cadastro de filme"
+          >
+            ×
+          </button>
         </div>
-      )}
 
-      <div className="space-y-3">
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome do filme *"
-          required
-          disabled={loading}
-          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
-        />
+        <form onSubmit={handleSubmit} className="p-5 space-y-3">
+          {error && (
+            <div className="rounded-lg border border-gray-700 bg-gray-800 p-3 text-sm text-gray-200">
+              {error}
+            </div>
+          )}
 
-        <input
-          type="url"
-          name="imagem"
-          placeholder="URL da imagem (opcional)"
-          disabled={loading}
-          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
-        />
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome do filme *"
+            required
+            disabled={loading}
+            className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+          />
 
-        <textarea
-          name="descricao"
-          placeholder="Descrição (opcional)"
-          rows="2"
-          disabled={loading}
-          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm resize-none"
-        />
+          <input
+            type="url"
+            name="imagem"
+            placeholder="URL da imagem (opcional)"
+            disabled={loading}
+            className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+          />
 
-        <input
-          type="date"
-          name="lancamento"
-          disabled={loading}
-          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
-        />
+          <textarea
+            name="descricao"
+            placeholder="Descrição (opcional)"
+            rows="3"
+            disabled={loading}
+            className="w-full resize-none rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+          />
 
-        <input
-          type="text"
-          name="adicionadoPor"
-          placeholder="Seu nome (opcional)"
-          disabled={loading}
-          className="w-full px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 disabled:opacity-50 text-sm"
-        />
+          <input
+            type="date"
+            name="lancamento"
+            disabled={loading}
+            className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+          />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full px-3 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-        >
-          {loading ? 'Adicionando...' : '➕ Adicionar Filme'}
-        </button>
+          <input
+            type="text"
+            name="adicionadoPor"
+            placeholder="Seu nome (opcional)"
+            disabled={loading}
+            className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 disabled:opacity-50"
+          />
+
+          <div className="flex gap-3 pt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={loading}
+              className="flex-1 rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-colors duration-150 hover:bg-gray-700 disabled:opacity-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-100 transition-colors duration-150 hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {loading ? 'Adicionando...' : '➕ Adicionar Filme'}
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
