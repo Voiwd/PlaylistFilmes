@@ -6,6 +6,7 @@ import FilterSortBar from './components/FilterSortBar';
 import FilmList from './components/FilmList';
 import AdminBar from './components/AdminBar';
 import EditFilmModal from './components/Modal/EditFilmModal';
+import FilmDetailsModal from './components/Modal/FilmDetailsModal';
 import AdminPasswordModal from './components/Modal/AdminPasswordModal';
 import Roulette from './components/Roulette';
 
@@ -68,6 +69,7 @@ function App() {
       </main>
 
       <EditFilmModal />
+      <FilmDetailsModal />
       <AdminPasswordModal 
         isOpen={isPasswordModalOpen}
         onClose={closePasswordModal}

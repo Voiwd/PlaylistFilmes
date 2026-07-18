@@ -2,20 +2,12 @@ import { useState } from 'react';
 import { useFilmStore } from '../store/useFilmStore';
 import { deleteFilm } from '../services/firebaseService';
 
-function formatWatchmodePriceInfo(priceInfo) {
-  if (!priceInfo?.label) return '';
-  return priceInfo.label;
-}
-
 export default function FilmCard({ film }) {
-  const { adminMode, openEditModal } = useFilmStore();
+  const { adminMode, openEditModal, openFilmDetails } = useFilmStore();
   const [deleting, setDeleting] = useState(false);
 
   const posterUrl = film.posterUrl || film.imagem;
   const synopsis = film.overview || film.descricao || '';
-  const providers = Array.isArray(film.providers) ? film.providers.filter(Boolean) : [];
-  const topProviders = providers.slice(0, 3);
-  const priceInfo = film.priceInfo || null;
 
   const handleDelete = async () => {
     if (!confirm('Tem certeza que quer apagar este filme?')) return;
@@ -32,7 +24,18 @@ export default function FilmCard({ film }) {
   };
 
   return (
-    <div className="film-card w-full overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-lg">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => openFilmDetails(film)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openFilmDetails(film);
+        }
+      }}
+      className="film-card group w-full max-w-[220px] cursor-pointer overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
+    >
       <img
         src={posterUrl || 'https://via.placeholder.com/300x450?text=Sem+Imagem'}
         alt={film.nome}
@@ -42,77 +45,47 @@ export default function FilmCard({ film }) {
         }}
       />
 
-      <div className="space-y-2 p-3">
+      <div className="space-y-2 p-2.5">
         <div>
-          <h3 className="truncate text-sm font-bold text-gray-100">{film.nome}</h3>
-          {film.tmdbId && (
-            <p className="mt-1 text-[11px] uppercase tracking-wide text-cyan-200/80">
-              TMDB {film.tmdbId}
-            </p>
-          )}
+          <h3 className="line-clamp-2 text-sm font-bold leading-tight text-gray-100 group-hover:text-white">
+            {film.nome}
+          </h3>
         </div>
 
         {synopsis && (
-          <p className="line-clamp-3 text-xs leading-5 text-gray-400">{synopsis}</p>
+          <p className="line-clamp-2 text-[11px] leading-5 text-gray-400">{synopsis}</p>
         )}
 
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           {film.lancamento && (
-            <p className="text-xs text-gray-500">
+            <p className="text-[11px] text-gray-500">
               <span className="font-semibold text-gray-300">Lançamento:</span>{' '}
               {new Date(film.lancamento).toLocaleDateString('pt-BR')}
             </p>
           )}
 
-          <p className="text-xs text-gray-500">
+          <p className="text-[11px] text-gray-500">
             <span className="font-semibold text-gray-300">Por:</span>{' '}
             {film.adicionadoPor || 'Desconhecido'}
           </p>
         </div>
 
-        <div className="rounded-lg border border-gray-800 bg-gray-950/60 p-2">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-            Onde assistir
-          </p>
-
-          {providers.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {topProviders.map((provider) => (
-                <span
-                  key={`${provider.sourceId || provider.name}-${provider.region || 'global'}`}
-                  className="rounded-full border border-gray-700 bg-gray-800 px-2 py-1 text-[11px] text-gray-200"
-                  title={provider.label || provider.name}
-                >
-                  {provider.name}
-                  {provider.label ? ` · ${provider.label}` : ''}
-                </span>
-              ))}
-            </div>
-          ) : (
-            <p className="mt-2 text-xs text-gray-500">Sem disponibilidade encontrada.</p>
-          )}
-
-          {priceInfo?.label && (
-            <p className="mt-2 text-xs text-emerald-200">
-              <span className="font-semibold text-emerald-300">Preço:</span>{' '}
-              {formatWatchmodePriceInfo(priceInfo)}
-            </p>
-          )}
-
-          {film.country && (
-            <p className="mt-1 text-[11px] text-gray-600">
-              Região: {film.country}
-            </p>
-          )}
-        </div>
-
         {adminMode && (
           <div className="admin-section flex gap-2 border-t border-gray-800 pt-2">
-            <button onClick={() => openEditModal(film)} className="admin-btn flex-1">
+            <button
+              onClick={(event) => {
+                event.stopPropagation();
+                openEditModal(film);
+              }}
+              className="admin-btn flex-1"
+            >
               ✏️ Editar
             </button>
             <button
-              onClick={handleDelete}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleDelete();
+              }}
               disabled={deleting}
               className="admin-btn flex-1 disabled:opacity-50"
             >
