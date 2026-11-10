@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-SPA de playlist de filmes colaborativa para mim e meus amigos.
+SPA de playlist de filmes colaborativa
 </p>
 
 ![Prévia da Playlist de Filmes](demo.gif)
